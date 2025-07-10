@@ -69,22 +69,23 @@ def get_datasets():
 @dataset_bp.route('/<id>', methods=['GET'])
 def get_dataset(id):
     """
-        Get dataset by ID
-        ```
-        tags:
-        - Datasets
-        parameters:
-            -name: id
-             in: path
-             type: string
-             required: true
-             description: The ID of the dataset responses:
-             200:
-               description: Dataset found
-             400:
-                description: Invalid dataset ID format
-             404:
-               description: Dataset not found
+    Get dataset by ID
+    ---
+    tags:
+      - Datasets
+    parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+        description: ID of the dataset
+    responses:
+      200:
+        description: Dataset found
+      400:
+        description: Invalid dataset ID
+      404:
+        description: Dataset not found
     """
     return dataset_service.get_dataset(id)
 
@@ -92,52 +93,125 @@ def get_dataset(id):
 @dataset_bp.route('/<id>', methods=['PUT'])
 def update_dataset(id):
     """
-    Update a datasset
+    Update a dataset
     ---
     tags:
-        - Datasets  
+      - Datasets  
     parameters:
-        - name: id
-          in: path
-          type: string
-          required: true
-          description: ID of the dataset
-        - in: body
-          schema:
-            type: object
-            properties:
-                name: 
-                  type: string
-                owner: 
-                  type: string
-                description:
-                  type: string
-                tags:
-                  type: array
-                  items: 
-                    type: string
-    
-    response:
-        200:
-            description: Dataset updated
-        400: 
-            description: Invalid ID or no valid fields
-        404:
-            description: Dataset not found
+      - name: id
+        in: path
+        type: string
+        required: true
+        description: ID of the dataset
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          properties:
+            name: 
+              type: string
+            owner: 
+              type: string
+            description:
+              type: string
+            tags:
+              type: array
+              items: 
+                type: string
+    responses:
+      200:
+        description: Dataset updated
+      400: 
+        description: Invalid ID or no valid fields
+      404:
+        description: Dataset not found
     """
     return dataset_service.update_dataset(id, request.json)
 
 
 @dataset_bp.route('/<id>', methods=['DELETE'])
 def delete_dataset(id):
+    """
+    Soft delete a dataset
+    ---
+    tags:
+      - Datasets
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        description: Dataset ID to soft-delete
+    responses:
+      200:
+        description: Dataset soft deleted
+      400:
+        description: Invalid dataset ID
+      404:
+        description: Dataset not found
+    """
     return dataset_service.soft_delete_dataset(id)
 
 
 @dataset_bp.route('/<id>/quality-1', methods=['POST'])
 def add_quality_log(id):
+    """
+    Add a quality log to a dataset
+    ---
+    tags:
+      - Quality Logs
+    parameters: 
+      - name: id
+        in: path
+        type: string
+        required: true
+        description: ID of the dataset
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum: [PASS, FAIL]
+              description: Result of the quality check     
+            details:
+              type: string
+              description: Optional explanation
+    responses:
+      201: 
+        description: Quality log added
+      400:
+        description: Bad input or missing fields
+      404: 
+        description: Dataset not found  
+    """
     return dataset_service.add_quality_log(id, request.json)
 
 
 @dataset_bp.route('/<id>/quality-1', methods=['GET'])
 def get_quality_logs(id):
+    """
+    Get all quality logs for a dataset
+    ---
+    tags:
+      - Quality Logs
+    parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+        description: ID of the dataset
+    responses:
+      200:
+        description: List of quality logs
+      400:
+        description: Invalid dataset ID
+      404:
+        description: Dataset not found
+    """
     return dataset_service.get_quality_logs(id)
