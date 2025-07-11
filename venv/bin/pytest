@@ -1,4 +1,4 @@
-#!/home/rajiv-singh/Datawse_api/datawise-backend/venv/bin/python3.12
+#!/home/rajiv-singh/Datawse_api/venv/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/rajiv-singh/Datawse_api/datawise-backend/venv"
+set -gx VIRTUAL_ENV "/home/rajiv-singh/Datawse_api/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
